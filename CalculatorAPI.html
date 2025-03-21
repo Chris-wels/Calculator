@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math.js Calculator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.0.1/math.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .calculator-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            width: 280px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        h1 { margin-bottom: 15px; font-size: 20px; }
+        #display { width: 90%; padding: 8px; font-size: 20px; text-align: right; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        #error { color: red; font-size: 12px; }
+        .calculator { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-top: 15px; }
+        .calculator button { padding: 15px; font-size: 16px; cursor: pointer; background-color: #f4f4f4; border: 1px solid #ddd; border-radius: 5px; transition: background-color 0.3s ease; }
+        .calculator button:hover { background-color: #e0e0e0; }
+        .calculator button:active { background-color: #ccc; }
+        .calculator button:focus { outline: none; }
+        select { width: 100%; padding: 10px; font-size: 16px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <h1>Calculator</h1>
+        <input type="text" id="display" placeholder="" />
+        <div class="calculator">
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button onclick="appendToDisplay('+')">+</button>
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button onclick="appendToDisplay('-')">-</button>
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button onclick="appendToDisplay('*')">*</button>
+            <button onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')">.</button>
+            <button onclick="clearDisplay()" style="background-color: #c4cccc;">C</button>
+            <button onclick="calculate()" style="background-color: lightgreen;">=</button>
+            <button onclick="appendToDisplay('/')">/</button>
+            <button onclick="backspace()" style="background-color: lightcoral;">←</button>
+        </div>
+        <select onchange="appendToDisplay(this.value)">
+            <option value="">Select operation</option>
+            <option value="^">Power (^)</option>
+            <option value="sqrt(">Square Root (√)</option>
+            <option value="pi">Pi (π)</option>
+            <option value="sin(">Sin</option>
+            <option value="cos(">Cos</option>
+            <option value="tan(">Tan</option>
+            <option value="log(">Log</option>
+            <option value="exp(">Exp</option>
+            <option value="abs(">Abs</option>
+            <option value="factorial(">Factorial (!)</option>
+            <option value="round(">Round</option>
+            <option value="floor(">Floor</option>
+            <option value="ceil(">Ceil</option>
+        </select>
+        <div id="error"></div>
+    </div>
+    
+    <script>
+        function appendToDisplay(value) {
+            document.getElementById('display').value += value;
+            document.getElementById('error').innerText = ''; // Clear any previous error message
+        }
+
+        function clearDisplay() {
+            document.getElementById('display').value = '';
+            document.getElementById('error').innerText = ''; // Clear any previous error message
+        }
+
+        function backspace() {
+            let display = document.getElementById('display');
+            display.value = display.value.slice(0, -1);
+        }
+
+        function calculate() {
+            const expression = document.getElementById('display').value;
+            try {
+                // Evaluate the math expression using Math.js
+                let result = math.evaluate(expression);
+                document.getElementById('display').value = result;
+            } catch (error) {
+                // Display error if the expression is invalid
+                document.getElementById('error').innerText = 'Invalid expression!';
+                document.getElementById('display').value = '';
+            }
+        }
+    </script>
+</body>
+</html>
+
+
