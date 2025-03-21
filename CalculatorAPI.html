@@ -30,7 +30,7 @@
 <body>
     <div class="calculator-container">
         <h1>Calculator</h1>
-        <input type="text" id="display" placeholder="" />
+        <input readonly type="text" id="display" placeholder="" />
         <div class="calculator">
             <button onclick="appendToDisplay('7')">7</button>
             <button onclick="appendToDisplay('8')">8</button>
@@ -46,10 +46,12 @@
             <button onclick="appendToDisplay('*')">*</button>
             <button onclick="appendToDisplay('0')">0</button>
             <button onclick="appendToDisplay('.')">.</button>
-            <button onclick="clearDisplay()" style="background-color: #c4cccc;">C</button>
-            <button onclick="calculate()" style="background-color: lightgreen;">=</button>
             <button onclick="appendToDisplay('/')">/</button>
             <button onclick="backspace()" style="background-color: lightcoral;">←</button>
+            <button onclick="clearDisplay()" style="background-color: #c4cccc;">C</button>
+            <button onclick="calculate()" style="background-color: lightgreen;">=</button>
+            <button onclick="appendToDisplay('(')">(</button>
+            <button onclick="appendToDisplay(')')">)</button>
         </div>
         <select onchange="appendToDisplay(this.value)">
             <option value="">Select operation</option>
@@ -71,6 +73,21 @@
     </div>
     
     <script>
+                document.addEventListener("keydown", function(event) {
+            const validKeys = "0123456789+-*/().";
+            const display = document.getElementById("display");
+
+            if (validKeys.includes(event.key)) {
+                appendToDisplay(event.key);
+            } else if (event.key === "Enter") {
+                event.preventDefault(); // Prevent form submission (if any)
+                calculate();
+            } else if (event.key === "Backspace") {
+                backspace();
+            } else if (event.key === "Escape") {
+                clearDisplay();
+            }
+        });
         function appendToDisplay(value) {
             document.getElementById('display').value += value;
             document.getElementById('error').innerText = ''; // Clear any previous error message
